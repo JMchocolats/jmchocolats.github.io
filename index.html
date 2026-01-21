@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>JM Chocolat | Luxury Chocolaterie</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:#2b1b17;
+  color:#fff;
+}
+header{
+  background:linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+  url("https://images.unsplash.com/photo-1606312619070-d48b4c652a52") center/cover no-repeat;
+  text-align:center;
+  padding:80px 20px;
+}
+.logo{
+  width:180px;
+  margin-bottom:20px;
+}
+nav{
+  text-align:center;
+  background:#1a0d09;
+  padding:10px;
+}
+nav button{
+  margin:5px;
+  padding:8px 16px;
+  border:none;
+  border-radius:20px;
+  background:#d4a373;
+  color:#2b1b17;
+  font-weight:500;
+}
+section{
+  padding:70px 20px;
+  text-align:center;
+}
+h2{
+  font-family:'Playfair Display',serif;
+  font-size:34px;
+  color:#d4a373;
+}
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+  margin-top:40px;
+}
+.product{
+  background:#1f120e;
+  padding:20px;
+  border-radius:18px;
+}
+.product img{
+  width:100%;
+  border-radius:15px;
+}
+.price{
+  color:#e6c08c;
+  font-size:20px;
+  margin:10px 0;
+}
+.buy{
+  display:inline-block;
+  margin-top:10px;
+  padding:12px 28px;
+  border-radius:30px;
+  background:#e6c08c;
+  color:#2b1b17;
+  text-decoration:none;
+}
+footer{
+  background:#1a0d09;
+  padding:25px;
+  text-align:center;
+  font-size:14px;
+}
+</style>
+
+<script>
+function lang(l){
+  document.querySelectorAll("[data-lang]").forEach(e=>{
+    e.style.display=e.dataset.lang==l?"block":"none";
+  });
+}
+</script>
+</head>
+
+<body onload="lang('fr')">
+
+<nav>
+  <button onclick="lang('fr')">Français</button>
+  <button onclick="lang('ar')">العربية</button>
+  <button onclick="lang('en')">English</button>
+</nav>
+
+<header>
+  <img src="logo.png" class="logo">
+  <p data-lang="fr">Chocolaterie artisanale de luxe</p>
+  <p data-lang="ar">شوكولاتة فاخرة مصنوعة بحب وذوق راقٍ</p>
+  <p data-lang="en">Luxury handmade chocolates</p>
+</header>
+
+<section>
+  <h2>Produits</h2>
+  <div class="products">
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1582176604856-e824b4736522">
+      <h3>Boîte Chocolat Luxe</h3>
+      <div class="price">35 DT</div>
+      <p>Unité : Boîte 12 pièces</p>
+      <a class="buy" href="https://m.me/JM-Chocolatier">Acheter</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Cadeaux & Occasions</h2>
+  <p>Ramadan • Aïd • Anniversaire • Cadeaux personnalisés</p>
+</section>
+
+<section>
+  <h2>Commande</h2>
+  <p>
+    ✔ Inscription personnalisée possible (nom, message, date)<br>
+    ✔ Détails de paiement envoyés automatiquement en message privé
+  </p>
+  <a class="buy" href="https://m.me/JM-Chocolatier">Messenger</a>
+  <a class="buy" href="https://wa.me/216XXXXXXXX">WhatsApp</a>
+  <a class="buy" href="https://instagram.com/">Instagram</a>
+</section>
+
+<footer>
+© 2026 JM Chocolat – Luxury Chocolaterie
+</footer>
+
+</body>
+</html>
