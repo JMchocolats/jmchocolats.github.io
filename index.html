@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>JM Chocolat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;font-family:Poppins,sans-serif;background:#2b1b17;color:#fff}
+.topbar{position:fixed;top:0;width:100%;background:#1a0d09;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100}
+.topbar img{height:42px}
+.lang button{background:#d4a373;border:none;margin-left:6px;padding:6px 12px;border-radius:8px;font-weight:600}
+
+section{padding:80px 15px}
+h2{font-family:'Playfair Display',serif;color:#d4a373;text-align:center}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;max-width:1000px;margin:auto}
+.card{background:#24140f;border:2px solid #d4a373;border-radius:18px;overflow:hidden;text-align:center}
+.card img{width:100%;display:block}
+.card p{margin:8px 0}
+
+.box{max-width:900px;margin:auto;background:#24140f;padding:25px;border-radius:20px}
+select,input{width:100%;padding:14px;border-radius:12px;border:none;margin-top:10px}
+
+.sendBtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:15px}
+.sendBtns button{background:#d4a373;color:#2b1b17;border:none;padding:12px;border-radius:25px;font-weight:600}
+.sendBtns i{margin-right:6px}
+
+footer{background:#1a0d09;padding:25px;text-align:center}
+footer a{color:#d4a373;margin:0 14px;font-size:26px}
+footer a:hover{color:#fff}
+</style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <img src="logo.png">
+  <div class="lang">
+    <button onclick="setLang('fr')">FR</button>
+    <button onclick="setLang('ar')">AR</button>
+    <button onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<!-- PRODUITS -->
+<section style="margin-top:60px">
+<h2 id="prodTitle">Nos Produits</h2>
+
+<div class="grid">
+  <div class="card"><img src="ganache_chocolatnoir.png"><p>Chocolat Noir<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="Ganache_chocolatlait.png"><p>Chocolat Lait<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="ganache_pistache.png"><p>Pistache<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="ganache_fraise.png"><p>Fraise<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="ganache_coco.png"><p>Coco<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="ganache_vanille.png"><p>Vanille<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="ganache_caramel.png"><p>Caramel<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="ganache_caramelvanille.png"><p>Caramel Vanille<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="ganache_friuts.png"><p>Fruits<br><span class="pcs">2</span> pcs</p></div>
+  <div class="card"><img src="Ganache_baklawa.png"><p>Baklawa<br><span class="pcs">2</span> pcs</p></div>
+</div>
+</section>
+
+<!-- COMMANDE -->
+<section>
+<h2 id="chooseTitle">Choisir votre coffret</h2>
+
+<div class="box">
+<select onchange="selectBox(this)">
+  <option value="">—</option>
+  <option value="30|90">30 – 90 DT</option>
+  <option value="42|122">42 – 122 DT</option>
+  <option value="49|138">49 – 138 DT</option>
+  <option value="56|150">56 – 150 DT</option>
+  <option value="64|165">64 – 165 DT</option>
+</select>
+
+<p id="priceBox"></p>
+
+<input id="nom" placeholder="Nom">
+<input id="prenom" placeholder="Prénom">
+<input id="adresse" placeholder="Gouvernorat / Ville / Quartier">
+
+<div class="sendBtns">
+  <button onclick="sendMsg('wa')"><i class="fab fa-whatsapp"></i>WhatsApp</button>
+  <button onclick="sendMsg('fb')"><i class="fab fa-facebook"></i>Facebook</button>
+  <button onclick="sendMsg('ig')"><i class="fab fa-instagram"></i>Instagram</button>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://www.facebook.com/share/1DbahDd9FF/" target="_blank"><i class="fab fa-facebook"></i></a>
+  <a href="https://www.instagram.com/goat.2024861" target="_blank"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.tiktok.com/@jm.chocolat" target="_blank"><i class="fab fa-tiktok"></i></a>
+</footer>
+
+<script>
+let pieces=0,price=0;
+const pcsPerFlavor=2;
+
+function selectBox(s){
+  if(!s.value)return;
+  [pieces,price]=s.value.split("|");
+  priceBox.innerText=pieces+" pièces – "+price+" DT";
+  autoDistribute(parseInt(pieces));
+}
+
+function autoDistribute(total){
+  const cards=document.querySelectorAll(".card");
+  cards.forEach(c=>c.querySelector(".pcs").innerText=0);
+  let i=0;
+  while(total>0){
+    const c=cards[i%cards.length];
+    c.querySelector(".pcs").innerText=
+      parseInt(c.querySelector(".pcs").innerText)+pcsPerFlavor;
+    total-=pcsPerFlavor;
+    i++;
+  }
+}
+
+function sendMsg(type){
+  const msg=
+`Commande JM Chocolat
+Nom: ${nom.value}
+Prénom: ${prenom.value}
+Adresse: ${adresse.value}
+Coffret: ${pieces} pièces
+Prix: ${price} DT`;
+
+  let url="";
+  if(type==="wa") url="https://wa.me/21627617767?text=";
+  if(type==="fb") url="https://www.facebook.com/messages/t/?text=";
+  if(type==="ig") url="https://www.instagram.com/direct/new/?text=";
+
+  window.open(url+encodeURIComponent(msg),"_blank");
+}
+
+function setLang(l){
+const t={
+fr:["Nos Produits","Choisir votre coffret","Nom","Prénom","Gouvernorat / Ville / Quartier"],
+ar:["منتجاتنا","اختر العلبة","الاسم","اللقب","الولاية / المدينة / الحي"],
+en:["Our Products","Choose your box","First name","Last name","State / City / Area"]
+};
+prodTitle.innerText=t[l][0];
+chooseTitle.innerText=t[l][1];
+nom.placeholder=t[l][2];
+prenom.placeholder=t[l][3];
+adresse.placeholder=t[l][4];
+}
+</script>
+
+</body>
+</html>
