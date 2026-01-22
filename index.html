@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>JM Chocolat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;font-family:Poppins,sans-serif;background:#2b1b17;color:#fff}
+header,section{padding:80px 15px}
+h1,h2{font-family:'Playfair Display',serif;color:#d4a373;text-align:center}
+p{text-align:center;max-width:900px;margin:auto}
+
+.topbar{
+ position:fixed;top:0;width:100%;background:#1a0d09;
+ padding:10px 16px;display:flex;justify-content:space-between;z-index:100
+}
+.topbar img{height:40px}
+.lang button{background:#d4a373;border:none;margin-left:6px;padding:6px 12px;border-radius:8px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;max-width:1100px;margin:auto}
+.card{background:#24140f;border:2px solid #d4a373;border-radius:18px;overflow:hidden;text-align:center}
+.card img{width:100%}
+.card p{margin:6px 0;font-size:14px}
+
+.badge{background:#d4a373;color:#2b1b17;font-size:12px;padding:3px 8px;border-radius:12px;display:inline-block;margin-bottom:4px}
+
+.box{max-width:900px;margin:auto;background:#24140f;padding:25px;border-radius:20px}
+select,input{width:100%;padding:14px;border-radius:12px;border:none;margin-top:10px}
+
+.sendBtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:15px}
+.sendBtns button{background:#d4a373;color:#2b1b17;border:none;padding:12px;border-radius:25px;font-weight:600}
+
+footer{background:#1a0d09;padding:25px;text-align:center}
+footer a{color:#d4a373;margin:0 14px;font-size:26px}
+</style>
+</head>
+
+<body>
+
+<!-- TOP -->
+<div class="topbar">
+ <img src="logo.png">
+ <div class="lang">
+  <button onclick="setLang('fr')">FR</button>
+  <button onclick="setLang('ar')">AR</button>
+  <button onclick="setLang('en')">EN</button>
+ </div>
+</div>
+
+<!-- ACCUEIL -->
+<header style="margin-top:50px">
+<h1 id="title">JM Chocolat</h1>
+<p id="subtitle">Chocolaterie artisanale – Luxe & qualité</p>
+<p id="about">
+Nous créons des chocolats artisanaux avec des ingrédients soigneusement sélectionnés.
+</p>
+<p style="margin-top:15px">⏱️ <strong>مدة التحضير:</strong> 24 – 48 ساعة</p>
+</header>
+
+<!-- PRODUITS -->
+<section>
+<h2 id="prodTitle">Nos Produits</h2>
+
+<h3>🍓 غلال</h3>
+<div class="grid">
+ <div class="card">
+  <span class="badge">🔥 Best</span>
+  <img src="ganache_friuts.png">
+  <p>Fruits</p>
+  <p>Ganache fraîche aux fruits</p>
+  <p class="pcs"></p>
+ </div>
+</div>
+
+<h3>🍫 Chocolats</h3>
+<div class="grid">
+ <div class="card"><img src="ganache_chocolatnoir.png"><p>Noir</p><p>Intense & riche</p><p class="pcs"></p></div>
+ <div class="card"><img src="Ganache_chocolatlait.png"><p>Lait</p><p>Doux & crémeux</p><p class="pcs"></p></div>
+</div>
+
+<h3>🥮 تقليدية</h3>
+<div class="grid">
+ <div class="card"><img src="Ganache_baklawa.png"><p>Baklawa</p><p>Saveur orientale</p><p class="pcs"></p></div>
+</div>
+</section>
+
+<!-- COMMANDE -->
+<section>
+<h2 id="orderTitle">Commande</h2>
+
+<div class="box">
+<select onchange="selectBox(this)">
+ <option value="">Choisir le nombre de pièces</option>
+ <option value="30|90">30 – 90 DT</option>
+ <option value="42|122">42 – 122 DT</option>
+ <option value="49|138">49 – 138 DT</option>
+ <option value="56|150">56 – 150 DT</option>
+ <option value="64|165">64 – 165 DT</option>
+</select>
+
+<p id="price"></p>
+
+<input id="name" placeholder="Nom">
+<input id="phone" placeholder="Téléphone">
+<input id="lastname" placeholder="Prénom">
+<input id="address" placeholder="ولاية / مدينة / حي">
+
+<div class="sendBtns">
+ <button onclick="send('wa')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+ <button onclick="send('fb')"><i class="fab fa-facebook"></i> Facebook</button>
+ <button onclick="send('ig')"><i class="fab fa-instagram"></i> Instagram</button>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+ <a href="https://www.facebook.com/share/1DbahDd9FF/" target="_blank"><i class="fab fa-facebook"></i></a>
+ <a href="https://www.instagram.com/goat.2024861" target="_blank"><i class="fab fa-instagram"></i></a>
+ <a href="https://www.tiktok.com/@jm.chocolat" target="_blank"><i class="fab fa-tiktok"></i></a>
+</footer>
+
+<script>
+let pieces=0,price=0;
+
+function selectBox(s){
+ if(!s.value)return;
+ [pieces,price]=s.value.split("|");
+ document.getElementById("price").innerText=
+ pieces+" pièces – "+price+" DT";
+
+ autoDistribute();
+}
+
+function autoDistribute(){
+ const cards=document.querySelectorAll(".card");
+ cards.forEach(c=>c.querySelector(".pcs").innerText="");
+
+ let base=Math.floor(pieces/cards.length);
+ let r=pieces%cards.length;
+
+ cards.forEach((c,i)=>{
+  let q=base+(i<r?1:0);
+  c.querySelector(".pcs").innerText=q+" pcs";
+ });
+}
+
+function send(type){
+ let msg=
+`Commande JM Chocolat
+Nom: ${name.value}
+Téléphone: ${phone.value}
+Prénom: ${lastname.value}
+Adresse: ${address.value}
+Total: ${pieces} pièces
+Prix: ${price} DT`;
+
+ let url="";
+ if(type==="wa") url="https://wa.me/21627617767?text=";
+ if(type==="fb") url="https://www.facebook.com/messages/t/?text=";
+ if(type==="ig") url="https://www.instagram.com/direct/new/?text=";
+
+ window.open(url+encodeURIComponent(msg),"_blank");
+}
+
+function setLang(l){
+ if(l==="ar"){
+  title.innerText="JM شوكولاتة";
+  subtitle.innerText="شوكولاتة حرفية فاخرة";
+  prodTitle.innerText="منتجاتنا";
+  orderTitle.innerText="طلب";
+ }
+ if(l==="en"){
+  subtitle.innerText="Luxury artisanal chocolate";
+  prodTitle.innerText="Our Products";
+  orderTitle.innerText="Order";
+ }
+}
+</script>
+
+</body>
+</html>
